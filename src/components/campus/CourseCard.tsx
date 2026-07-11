@@ -33,7 +33,7 @@ export default function CourseCard({
       href={`/mis-cursos/${cursoSlug}`}
       className="group overflow-hidden rounded-2xl border border-violet-border bg-white transition motion-safe:hover:-translate-y-0.5 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
     >
-      <div className="relative h-32 w-full overflow-hidden bg-violet-light2">
+      <div className="relative aspect-video w-full overflow-hidden bg-violet-light2">
         {!imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
