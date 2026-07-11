@@ -368,3 +368,20 @@ export function findLeccion(cursoSlug: string, leccionId: string): Leccion | und
   }
   return undefined;
 }
+
+// Primera lección sin completar, recorriendo módulos y lecciones en orden.
+// Devuelve null si el alumno ya completó todo el curso.
+export function getPrimeraLeccionPendiente(
+  cursoSlug: string,
+  leccionesCompletadasIds: string[]
+): Leccion | null {
+  const curso = getCurriculumForCourse(cursoSlug);
+  if (!curso) return null;
+  const completadas = new Set(leccionesCompletadasIds);
+  for (const modulo of curso.modulos) {
+    for (const leccion of modulo.lecciones) {
+      if (!completadas.has(leccion.id)) return leccion;
+    }
+  }
+  return null;
+}
