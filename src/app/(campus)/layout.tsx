@@ -15,7 +15,7 @@ export default async function CampusLayout({
   if (!user) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-violet-light">
       <Nav email={user.email ?? ""} />
       <div className="mx-auto max-w-5xl px-6 py-8">{children}</div>
     </div>
