@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCursosDelAlumno } from "@/lib/campus/data";
+import CertificadoButton from "@/components/campus/CertificadoButton";
 
 export default async function MiProgresoPage() {
   const supabase = await createClient();
@@ -9,6 +10,8 @@ export default async function MiProgresoPage() {
   if (!user) return null;
 
   const cursos = await getCursosDelAlumno(user.id);
+  const nombreAlumno =
+    (user.user_metadata?.nombre as string | undefined) ?? user.email ?? "";
   const totalLecciones = cursos.reduce((acc, c) => acc + c.totalLecciones, 0);
   const totalCompletadas = cursos.reduce(
     (acc, c) => acc + c.leccionesCompletadas,
@@ -71,6 +74,15 @@ export default async function MiProgresoPage() {
                   {curso.leccionesCompletadas} de {curso.totalLecciones}{" "}
                   lecciones completadas
                 </p>
+
+                {curso.porcentaje === 100 && (
+                  <div className="mt-4">
+                    <CertificadoButton
+                      nombreAlumno={nombreAlumno}
+                      cursoTitulo={curso.titulo}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>
