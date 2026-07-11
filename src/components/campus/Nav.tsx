@@ -24,21 +24,31 @@ export default function Nav({ email }: { email: string }) {
   return (
     <header className="border-b border-violet-border bg-white">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-4">
-        <span className="text-lg font-semibold text-violet-dark">
-          Campus NEI
-        </span>
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet text-sm font-semibold text-white">
+            N
+          </span>
+          <span className="text-base font-semibold text-violet-dark">
+            Campus{" "}
+            <span className="font-normal text-ink-secondary">
+              Next Ezeiza
+            </span>
+          </span>
+        </Link>
+
         <nav className="flex flex-wrap items-center gap-6">
           {links.map((l) => {
-            const activo = pathname === l.href || pathname.startsWith(l.href + "/");
+            const activo =
+              pathname === l.href || pathname.startsWith(l.href + "/");
             return (
               <Link
                 key={l.href}
                 href={l.href}
-                className={
+                className={`border-b-2 pb-1 text-sm transition ${
                   activo
-                    ? "text-sm font-semibold text-violet"
-                    : "text-sm text-ink-secondary hover:text-violet-dark"
-                }
+                    ? "border-violet font-semibold text-violet-dark"
+                    : "border-transparent text-ink-secondary hover:border-violet-border hover:text-violet-dark"
+                }`}
               >
                 {l.label}
               </Link>
@@ -49,7 +59,7 @@ export default function Nav({ email }: { email: string }) {
           </span>
           <button
             onClick={cerrarSesion}
-            className="text-sm text-ink-secondary underline hover:text-violet-dark"
+            className="text-sm text-ink-secondary underline decoration-violet-border underline-offset-2 hover:text-violet-dark"
           >
             Cerrar sesión
           </button>
