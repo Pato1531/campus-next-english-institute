@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { getCursosDelAlumno } from "@/lib/campus/data";
+import {
+  getCursosDelAlumno,
+  getLeccionesCompletadasCurso,
+} from "@/lib/campus/data";
+import { getPrimeraLeccionPendiente } from "@/data/curriculum";
+import CourseCard from "@/components/campus/CourseCard";
+import ProgressRing from "@/components/campus/ProgressRing";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -19,6 +25,20 @@ export default async function DashboardPage() {
     " "
   )[0];
 
+  // El curso "en curso": el primero que no esté 100% completo.
+  const cursoEnCurso = cursos.find((c) => c.porcentaje < 100) ?? null;
+  let proximaLeccion = null;
+  if (cursoEnCurso) {
+    const completadasIds = await getLeccionesCompletadasCurso(
+      user.id,
+      cursoEnCurso.cursoSlug
+    );
+    proximaLeccion = getPrimeraLeccionPendiente(
+      cursoEnCurso.cursoSlug,
+      completadasIds
+    );
+  }
+
   return (
     <div>
       <h1 className="text-2xl font-semibold text-violet-dark">
@@ -32,32 +52,47 @@ export default async function DashboardPage() {
             } activo${cursos.length > 1 ? "s" : ""}, con un ${promedio}% de avance promedio.`}
       </p>
 
-      {cursos.length > 0 && (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {cursos.map((curso) => (
-            <Link
-              key={curso.cursoSlug}
-              href={`/mis-cursos/${curso.cursoSlug}`}
-              className="rounded-xl border border-violet-border p-5 transition hover:border-violet"
-            >
-              <p className="text-xs uppercase tracking-wide text-ink-secondary">
-                {curso.nivel}
-              </p>
-              <h2 className="mt-1 text-lg font-semibold text-violet-dark">
-                {curso.titulo}
-              </h2>
-              <div className="mt-4 h-2 w-full rounded-full bg-violet-border">
-                <div
-                  className="h-2 rounded-full bg-violet"
-                  style={{ width: `${curso.porcentaje}%` }}
-                />
-              </div>
-              <p className="mt-2 text-xs text-ink-secondary">
-                {curso.leccionesCompletadas} / {curso.totalLecciones}{" "}
-                lecciones · {curso.porcentaje}%
-              </p>
-            </Link>
-          ))}
+      {cursoEnCurso && proximaLeccion && (
+        <Link
+          href={`/mis-cursos/${cursoEnCurso.cursoSlug}`}
+          className="mt-8 flex flex-col items-start gap-4 rounded-2xl bg-violet-light2 p-6 transition hover:bg-violet-light sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-violet-dark/70">
+              Seguí donde lo dejaste
+            </p>
+            <h2 className="mt-1 text-lg font-semibold text-violet-dark">
+              {proximaLeccion.titulo}
+            </h2>
+            <p className="mt-1 text-sm text-ink-secondary">
+              {cursoEnCurso.titulo}
+            </p>
+          </div>
+          <ProgressRing porcentaje={cursoEnCurso.porcentaje} />
+        </Link>
+      )}
+
+      {cursos.length === 0 ? (
+        <p className="mt-8 text-sm text-ink-secondary">
+          Todavía no tenés cursos activos. Podés inscribirte en{" "}
+          <a
+            href="https://landing-next-english-institute.vercel.app"
+            className="font-medium text-violet underline"
+          >
+            nextenglishinstitute.com
+          </a>
+          .
+        </p>
+      ) : (
+        <div className="mt-10">
+          <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-ink-secondary">
+            Tus cursos
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {cursos.map((curso) => (
+              <CourseCard key={curso.cursoSlug} {...curso} />
+            ))}
+          </div>
         </div>
       )}
     </div>
