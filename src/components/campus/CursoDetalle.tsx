@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { CursoCurriculum, Leccion } from "@/data/curriculum";
+import Quiz from "@/components/campus/Quiz";
 
 interface Props {
   curso: CursoCurriculum;
@@ -155,20 +156,23 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
                 rel="noopener noreferrer"
                 className="rounded-lg border border-violet-border px-4 py-2 text-sm text-violet-dark transition hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
               >
-                Descargar material + mini test (PDF)
+                Descargar material de estudio (PDF)
               </a>
 
-              <button
-                onClick={() => marcarCompletada(leccionActiva.id)}
-                disabled={guardando || completadas.has(leccionActiva.id)}
-                className="rounded-lg bg-violet px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-dark disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-dark"
-              >
-                {completadas.has(leccionActiva.id)
-                  ? "Lección completada ✓"
-                  : guardando
-                    ? "Guardando..."
-                    : "Marcar como completada"}
-              </button>
+              {(!leccionActiva.preguntas ||
+                leccionActiva.preguntas.length === 0) && (
+                <button
+                  onClick={() => marcarCompletada(leccionActiva.id)}
+                  disabled={guardando || completadas.has(leccionActiva.id)}
+                  className="rounded-lg bg-violet px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-dark disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-dark"
+                >
+                  {completadas.has(leccionActiva.id)
+                    ? "Lección completada ✓"
+                    : guardando
+                      ? "Guardando..."
+                      : "Marcar como completada"}
+                </button>
+              )}
 
               {siguienteLeccion && (
                 <button
@@ -179,6 +183,18 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
                 </button>
               )}
             </div>
+
+            {leccionActiva.preguntas && leccionActiva.preguntas.length > 0 && (
+              <div className="mt-6">
+                <Quiz
+                  key={leccionActiva.id}
+                  preguntas={leccionActiva.preguntas}
+                  bloqueado={completadas.has(leccionActiva.id)}
+                  onAprobado={() => marcarCompletada(leccionActiva.id)}
+                />
+              </div>
+            )}
+
 
             <p
               role="status"
