@@ -1,12 +1,11 @@
 // src/data/curriculum.ts
-// Fuente única de verdad del contenido de cada curso: módulos y lecciones.
+// Fuente única de verdad del contenido de cada curso: portada, módulos y lecciones.
 // Mismo espíritu que elearningCourses.ts: agregar contenido = agregar datos acá,
 // sin tocar componentes ni rutas.
 //
-// CÓMO COMPLETAR: reemplazá cada 'COMPLETAR_TITULO', 'COMPLETAR_VIDEO_URL' y
-// 'COMPLETAR_PDF_URL' por el contenido real. No cambies los 'id' de las
-// lecciones una vez que haya alumnos con progreso guardado — son la referencia
-// estable que usa progreso_lecciones en Supabase.
+// CÓMO COMPLETAR: reemplazá cada 'COMPLETAR_*' por el contenido real. No cambies
+// los 'id' de las lecciones una vez que haya alumnos con progreso guardado — son
+// la referencia estable que usa progreso_lecciones en Supabase.
 
 export interface Leccion {
   id: string;
@@ -25,12 +24,16 @@ export interface Modulo {
 
 export interface CursoCurriculum {
   cursoSlug: string;
+  titulo: string;
+  nivel: string;
   modulos: Modulo[];
 }
 
 export const curriculum: CursoCurriculum[] = [
   {
     cursoSlug: "english-for-tourism",
+    titulo: "COMPLETAR_TITULO_CURSO",
+    nivel: "COMPLETAR_NIVEL",
     modulos: [
       {
         id: "tourism-m1",
@@ -120,6 +123,8 @@ export const curriculum: CursoCurriculum[] = [
   },
   {
     cursoSlug: "job-ready-english",
+    titulo: "COMPLETAR_TITULO_CURSO",
+    nivel: "COMPLETAR_NIVEL",
     modulos: [
       {
         id: "jobready-m1",
@@ -230,6 +235,8 @@ export const curriculum: CursoCurriculum[] = [
   },
   {
     cursoSlug: "english-from-zero",
+    titulo: "COMPLETAR_TITULO_CURSO",
+    nivel: "COMPLETAR_NIVEL",
     modulos: [
       {
         id: "efz-m1",
