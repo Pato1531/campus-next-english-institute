@@ -7,12 +7,27 @@
 // los 'id' de las lecciones una vez que haya alumnos con progreso guardado — son
 // la referencia estable que usa progreso_lecciones en Supabase.
 
+export interface OpcionPregunta {
+  texto: string;
+  correcta: boolean;
+}
+
+export interface Pregunta {
+  id: string;
+  enunciado: string;
+  opciones: OpcionPregunta[];
+}
+
 export interface Leccion {
   id: string;
   titulo: string;
   videoUrl: string;
   pdfUrl: string;
   orden: number;
+  // Opcional a propósito: mientras no se cargue el mini test de una lección,
+  // el campus muestra el botón manual de "marcar como completada" como
+  // fallback. En cuanto se agregan preguntas acá, el test la reemplaza.
+  preguntas?: Pregunta[];
 }
 
 export interface Modulo {
