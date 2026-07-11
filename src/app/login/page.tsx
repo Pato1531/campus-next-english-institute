@@ -64,7 +64,7 @@ export default function LoginPage() {
           <>
             <p className="mb-6 text-sm text-ink-secondary">
               Ingresá el email con el que compraste tu curso. Te mandamos un
-              código de acceso de 6 dígitos.
+              código de acceso.
             </p>
             <form onSubmit={pedirCodigo} className="flex flex-col gap-3">
               <input
@@ -88,23 +88,23 @@ export default function LoginPage() {
         ) : (
           <>
             <p className="mb-6 text-sm text-ink-secondary">
-              Te mandamos un código de 6 dígitos a{" "}
+              Te mandamos un código de acceso a{" "}
               <strong>{email}</strong>. Escribilo acá abajo.
             </p>
             <form onSubmit={verificarCodigo} className="flex flex-col gap-3">
               <input
                 type="text"
                 inputMode="numeric"
-                maxLength={6}
+                maxLength={8}
                 required
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
-                placeholder="123456"
+                placeholder="12345678"
                 className="rounded-lg border border-violet-border px-4 py-2.5 text-center text-lg tracking-[0.3em] outline-none focus:border-violet"
               />
               <button
                 type="submit"
-                disabled={cargando || codigo.length !== 6}
+                disabled={cargando || codigo.length < 6}
                 className="rounded-lg bg-violet px-4 py-2.5 text-sm font-medium text-white transition hover:bg-violet-dark disabled:opacity-60"
               >
                 {cargando ? "Verificando..." : "Ingresar"}
