@@ -14,20 +14,29 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
   const [completadas, setCompletadas] = useState(
     new Set(leccionesCompletadasIds)
   );
-  const primeraLeccion = curso.modulos[0]?.lecciones[0] ?? null;
+  const todasLasLecciones = curso.modulos.flatMap((m) => m.lecciones);
   const [leccionActiva, setLeccionActiva] = useState<Leccion | null>(
-    primeraLeccion
+    todasLasLecciones[0] ?? null
   );
   const [guardando, setGuardando] = useState(false);
+  const [recienCompletada, setRecienCompletada] = useState(false);
 
-  const totalLecciones = curso.modulos.reduce(
-    (acc, m) => acc + m.lecciones.length,
-    0
-  );
+  const totalLecciones = todasLasLecciones.length;
   const porcentaje =
     totalLecciones > 0
       ? Math.round((completadas.size / totalLecciones) * 100)
       : 0;
+
+  const indiceActual = leccionActiva
+    ? todasLasLecciones.findIndex((l) => l.id === leccionActiva.id)
+    : -1;
+  const siguienteLeccion =
+    indiceActual >= 0 ? (todasLasLecciones[indiceActual + 1] ?? null) : null;
+
+  function seleccionarLeccion(leccion: Leccion) {
+    setLeccionActiva(leccion);
+    setRecienCompletada(false);
+  }
 
   async function marcarCompletada(leccionId: string) {
     setGuardando(true);
@@ -54,6 +63,7 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
     setGuardando(false);
     if (!error) {
       setCompletadas((prev) => new Set(prev).add(leccionId));
+      setRecienCompletada(true);
     }
   }
 
@@ -65,9 +75,9 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
       <h1 className="mt-1 text-2xl font-semibold text-violet-dark">
         {curso.titulo}
       </h1>
-      <div className="mt-3 h-2 w-full max-w-md rounded-full bg-violet-border">
+      <div className="mt-3 h-1.5 w-full max-w-md overflow-hidden rounded-full bg-violet-border">
         <div
-          className="h-2 rounded-full bg-violet"
+          className="h-full rounded-full bg-violet motion-safe:transition-[width] motion-safe:duration-500"
           style={{ width: `${porcentaje}%` }}
         />
       </div>
@@ -77,7 +87,7 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
         {/* Lista de módulos y lecciones */}
-        <nav className="space-y-6">
+        <nav aria-label="Módulos del curso" className="space-y-6">
           {curso.modulos.map((modulo) => (
             <div key={modulo.id}>
               <h3 className="mb-2 text-sm font-semibold text-violet-dark">
@@ -90,11 +100,12 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
                   return (
                     <li key={leccion.id}>
                       <button
-                        onClick={() => setLeccionActiva(leccion)}
-                        className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
+                        onClick={() => seleccionarLeccion(leccion)}
+                        aria-current={activa ? "true" : undefined}
+                        className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet ${
                           activa
-                            ? "bg-violet-border/40 text-violet-dark"
-                            : "text-ink-secondary hover:bg-violet-border/20"
+                            ? "bg-violet-light2 text-violet-dark"
+                            : "text-ink-secondary hover:bg-violet-light2/60"
                         }`}
                       >
                         <span
@@ -119,7 +130,10 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
         {/* Lección activa */}
         {leccionActiva && (
           <div>
-            <h2 className="text-lg font-semibold text-violet-dark">
+            <p className="text-xs text-ink-secondary">
+              Lección {indiceActual + 1} de {totalLecciones}
+            </p>
+            <h2 className="mt-1 text-lg font-semibold text-violet-dark">
               {leccionActiva.titulo}
             </h2>
 
@@ -139,7 +153,7 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
                 href={leccionActiva.pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-violet-border px-4 py-2 text-sm text-violet-dark hover:border-violet"
+                className="rounded-lg border border-violet-border px-4 py-2 text-sm text-violet-dark transition hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
               >
                 Descargar material + mini test (PDF)
               </a>
@@ -147,7 +161,7 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
               <button
                 onClick={() => marcarCompletada(leccionActiva.id)}
                 disabled={guardando || completadas.has(leccionActiva.id)}
-                className="rounded-lg bg-violet px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-dark disabled:opacity-60"
+                className="rounded-lg bg-violet px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-dark disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-dark"
               >
                 {completadas.has(leccionActiva.id)
                   ? "Lección completada ✓"
@@ -155,7 +169,25 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
                     ? "Guardando..."
                     : "Marcar como completada"}
               </button>
+
+              {siguienteLeccion && (
+                <button
+                  onClick={() => seleccionarLeccion(siguienteLeccion)}
+                  className="text-sm font-medium text-violet-dark underline decoration-violet-border underline-offset-2 hover:decoration-violet"
+                >
+                  Siguiente lección →
+                </button>
+              )}
             </div>
+
+            <p
+              role="status"
+              className={`mt-3 text-sm text-violet-dark transition-opacity duration-300 ${
+                recienCompletada ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              ¡Bien ahí! Quedó guardada como completada.
+            </p>
           </div>
         )}
       </div>
