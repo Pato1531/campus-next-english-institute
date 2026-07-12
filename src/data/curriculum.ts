@@ -58,7 +58,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m1-l1",
             titulo: "Check-in & Baggage",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/yIhPjHGWTWc",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 1,
             preguntas: [
@@ -137,7 +137,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m1-l2",
             titulo: "Security & Immigration",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/FgDM1NIhaJs",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 2,
             preguntas: [
@@ -216,7 +216,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m1-l3",
             titulo: "Gates & Flights",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/J6UDYv27LOM",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 3,
             preguntas: [
@@ -302,7 +302,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m2-l1",
             titulo: "Hotel Check-in",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/BrJCRln5_sg",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 1,
             preguntas: [
@@ -381,7 +381,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m2-l2",
             titulo: "Requests & Services",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/40jRGmdqiLo",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 2,
             preguntas: [
@@ -460,7 +460,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m2-l3",
             titulo: "Problems & Complaints",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/rzFmni_CU6E",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 3,
             preguntas: [
@@ -539,7 +539,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m2-l4",
             titulo: "Checkout & Payment",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/vdudLx-LTJM",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 4,
             preguntas: [
@@ -625,7 +625,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m3-l1",
             titulo: "At the Restaurant",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/VepcXDlStaw",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 1,
             preguntas: [
@@ -704,7 +704,7 @@ export const curriculum: CursoCurriculum[] = [
           {
             id: "tourism-m3-l2",
             titulo: "Getting Around, Shopping & Sightseeing",
-            videoUrl: "COMPLETAR_VIDEO_URL",
+            videoUrl: "https://youtu.be/nfTOuFfH2Uw",
             pdfUrl: "COMPLETAR_PDF_URL",
             orden: 2,
             preguntas: [
