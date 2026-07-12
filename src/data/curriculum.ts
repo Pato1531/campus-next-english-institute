@@ -59,7 +59,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m1-l1",
             titulo: "Check-in & Baggage",
             videoUrl: "https://youtu.be/yIhPjHGWTWc",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m1l1-material.pdf",
             orden: 1,
             preguntas: [
               {
@@ -138,7 +138,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m1-l2",
             titulo: "Security & Immigration",
             videoUrl: "https://youtu.be/FgDM1NIhaJs",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m1l2-material.pdf",
             orden: 2,
             preguntas: [
               {
@@ -217,7 +217,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m1-l3",
             titulo: "Gates & Flights",
             videoUrl: "https://youtu.be/J6UDYv27LOM",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m1l3-material.pdf",
             orden: 3,
             preguntas: [
               {
@@ -303,7 +303,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m2-l1",
             titulo: "Hotel Check-in",
             videoUrl: "https://youtu.be/BrJCRln5_sg",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m2l1-material.pdf",
             orden: 1,
             preguntas: [
               {
@@ -382,7 +382,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m2-l2",
             titulo: "Requests & Services",
             videoUrl: "https://youtu.be/40jRGmdqiLo",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m2l2-material.pdf",
             orden: 2,
             preguntas: [
               {
@@ -461,7 +461,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m2-l3",
             titulo: "Problems & Complaints",
             videoUrl: "https://youtu.be/rzFmni_CU6E",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m2l3-material.pdf",
             orden: 3,
             preguntas: [
               {
@@ -540,7 +540,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m2-l4",
             titulo: "Checkout & Payment",
             videoUrl: "https://youtu.be/vdudLx-LTJM",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m2l4-material.pdf",
             orden: 4,
             preguntas: [
               {
@@ -626,7 +626,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m3-l1",
             titulo: "At the Restaurant",
             videoUrl: "https://youtu.be/VepcXDlStaw",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m3l1-material.pdf",
             orden: 1,
             preguntas: [
               {
@@ -705,7 +705,7 @@ export const curriculum: CursoCurriculum[] = [
             id: "tourism-m3-l2",
             titulo: "Getting Around, Shopping & Sightseeing",
             videoUrl: "https://youtu.be/nfTOuFfH2Uw",
-            pdfUrl: "COMPLETAR_PDF_URL",
+            pdfUrl: "https://krohueieztaedatyobwb.supabase.co/storage/v1/object/public/Lecciones/m3l2-material.pdf",
             orden: 2,
             preguntas: [
               {
