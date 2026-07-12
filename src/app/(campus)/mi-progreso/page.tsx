@@ -80,6 +80,8 @@ export default async function MiProgresoPage() {
                     <CertificadoButton
                       nombreAlumno={nombreAlumno}
                       cursoTitulo={curso.titulo}
+                      cursoNivel={curso.nivel}
+                      totalLecciones={curso.totalLecciones}
                     />
                   </div>
                 )}
