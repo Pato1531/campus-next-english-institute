@@ -76,10 +76,10 @@ export default async function DashboardPage() {
         <p className="mt-8 text-sm text-ink-secondary">
           Todavía no tenés cursos activos. Podés inscribirte en{" "}
           <a
-            href="https://landing-next-english-institute.vercel.app"
+            href="https://nextezeiza.com"
             className="font-medium text-violet underline"
           >
-            nextenglishinstitute.com
+            nextezeiza.com
           </a>
           .
         </p>
