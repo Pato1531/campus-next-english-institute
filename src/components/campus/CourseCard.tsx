@@ -15,8 +15,7 @@ interface Props {
 
 // Reutiliza las portadas que ya existen en la landing — sin duplicar
 // archivos entre los dos repos.
-const LANDING_IMG_BASE =
-  "https://landing-next-english-institute.vercel.app/images/elearning";
+const LANDING_IMG_BASE = "https://nextezeiza.com/images/elearning";
 
 export default function CourseCard({
   cursoSlug,
