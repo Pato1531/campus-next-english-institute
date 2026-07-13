@@ -1,18 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 type Paso = "email" | "codigo";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [paso, setPaso] = useState<Paso>("email");
   const [email, setEmail] = useState("");
   const [codigo, setCodigo] = useState("");
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Si el link del mail trae el email (?email=...), lo pre-cargamos y
+  // saltamos directo al paso del código — así el alumno no tiene que
+  // volver a tipear el mail ni disparamos un código nuevo sin necesidad.
+  useEffect(() => {
+    const emailDeLaUrl = searchParams.get("email");
+    if (emailDeLaUrl) {
+      setEmail(decodeURIComponent(emailDeLaUrl));
+      setPaso("codigo");
+    }
+  }, [searchParams]);
 
   async function pedirCodigo(e: React.FormEvent) {
     e.preventDefault();
@@ -97,6 +110,7 @@ export default function LoginPage() {
                 inputMode="numeric"
                 maxLength={8}
                 required
+                autoFocus
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
                 placeholder="12345678"
@@ -114,6 +128,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => {
                   setPaso("email");
+                  setEmail("");
                   setCodigo("");
                   setError(null);
                 }}
@@ -126,5 +141,13 @@ export default function LoginPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }
