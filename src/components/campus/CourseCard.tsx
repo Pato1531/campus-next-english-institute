@@ -11,11 +11,32 @@ interface Props {
   porcentaje: number;
   leccionesCompletadas: number;
   totalLecciones: number;
+  vencido?: boolean;
+  fechaVencimiento?: string;
 }
 
 // Reutiliza las portadas que ya existen en la landing — sin duplicar
 // archivos entre los dos repos.
 const LANDING_IMG_BASE = "https://nextezeiza.com/images/elearning";
+
+function calcularAvisoVencimiento(
+  vencido: boolean | undefined,
+  fechaVencimiento: string | undefined
+): { texto: string; urgente: boolean } | null {
+  if (!fechaVencimiento) return null;
+  if (vencido) return { texto: "Acceso vencido", urgente: true };
+
+  const diasRestantes = Math.ceil(
+    (new Date(fechaVencimiento).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  );
+  if (diasRestantes <= 30) {
+    return {
+      texto: `Vence en ${diasRestantes} día${diasRestantes === 1 ? "" : "s"}`,
+      urgente: diasRestantes <= 7,
+    };
+  }
+  return null;
+}
 
 export default function CourseCard({
   cursoSlug,
@@ -24,8 +45,11 @@ export default function CourseCard({
   porcentaje,
   leccionesCompletadas,
   totalLecciones,
+  vencido,
+  fechaVencimiento,
 }: Props) {
   const [imgError, setImgError] = useState(false);
+  const aviso = calcularAvisoVencimiento(vencido, fechaVencimiento);
 
   return (
     <Link
@@ -47,6 +71,17 @@ export default function CourseCard({
               {titulo.charAt(0)}
             </span>
           </div>
+        )}
+        {aviso && (
+          <span
+            className={`absolute right-2 top-2 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+              aviso.urgente
+                ? "bg-red-600 text-white"
+                : "bg-white text-violet-dark"
+            }`}
+          >
+            {aviso.texto}
+          </span>
         )}
       </div>
       <div className="p-5">
