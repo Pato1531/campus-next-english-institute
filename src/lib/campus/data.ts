@@ -6,6 +6,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurriculumForCourse, getTotalLecciones } from "@/data/curriculum";
 
+// El acceso a un curso dura 6 meses desde que se creó la inscripción
+// (fecha en la que el webhook de MP dio de alta al alumno tras el pago).
+export const MESES_DE_ACCESO = 6;
+
+function calcularFechaVencimiento(fechaInscripcion: string): Date {
+  const fecha = new Date(fechaInscripcion);
+  fecha.setMonth(fecha.getMonth() + MESES_DE_ACCESO);
+  return fecha;
+}
+
+function estaVencido(fechaInscripcion: string): boolean {
+  return calcularFechaVencimiento(fechaInscripcion).getTime() < Date.now();
+}
+
 export interface CursoConProgreso {
   cursoSlug: string;
   titulo: string;
@@ -13,6 +27,8 @@ export interface CursoConProgreso {
   totalLecciones: number;
   leccionesCompletadas: number;
   porcentaje: number;
+  vencido: boolean;
+  fechaVencimiento: string; // ISO, para mostrar "vence el ..." en la UI si hace falta
 }
 
 export async function getCursosDelAlumno(
@@ -22,7 +38,7 @@ export async function getCursosDelAlumno(
 
   const { data: inscripciones } = await supabase
     .from("inscripciones")
-    .select("curso_slug")
+    .select("curso_slug, creado_en")
     .eq("alumno_id", alumnoId);
 
   if (!inscripciones || inscripciones.length === 0) return [];
@@ -33,7 +49,7 @@ export async function getCursosDelAlumno(
     .eq("alumno_id", alumnoId)
     .eq("completada", true);
 
-  return inscripciones.map(({ curso_slug }) => {
+  return inscripciones.map(({ curso_slug, creado_en }) => {
     const cursoData = getCurriculumForCourse(curso_slug);
     const totalLecciones = getTotalLecciones(curso_slug);
     const completadas = (progreso ?? []).filter(
@@ -50,6 +66,8 @@ export async function getCursosDelAlumno(
         totalLecciones > 0
           ? Math.round((completadas / totalLecciones) * 100)
           : 0,
+      vencido: estaVencido(creado_en),
+      fechaVencimiento: calcularFechaVencimiento(creado_en).toISOString(),
     };
   });
 }
@@ -69,17 +87,31 @@ export async function getLeccionesCompletadasCurso(
   return (data ?? []).map((r) => r.leccion_id);
 }
 
-export async function estaInscripto(
+export interface EstadoInscripcion {
+  inscripto: boolean;
+  vencido: boolean;
+  fechaVencimiento: string | null;
+}
+
+export async function getEstadoInscripcion(
   alumnoId: string,
   cursoSlug: string
-): Promise<boolean> {
+): Promise<EstadoInscripcion> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("inscripciones")
-    .select("curso_slug")
+    .select("creado_en")
     .eq("alumno_id", alumnoId)
     .eq("curso_slug", cursoSlug)
     .maybeSingle();
 
-  return !!data;
+  if (!data) {
+    return { inscripto: false, vencido: false, fechaVencimiento: null };
+  }
+
+  return {
+    inscripto: true,
+    vencido: estaVencido(data.creado_en),
+    fechaVencimiento: calcularFechaVencimiento(data.creado_en).toISOString(),
+  };
 }
