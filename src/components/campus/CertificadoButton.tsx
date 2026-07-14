@@ -5,6 +5,8 @@
 // no al cargar el módulo — así "Mi Progreso" no arrastra ~130kB de más
 // para alumnos que todavía no tienen ningún curso al 100%.
 
+import { trackEvent } from "@/lib/gtag";
+
 interface Props {
   nombreAlumno: string;
   cursoTitulo: string;
@@ -189,6 +191,8 @@ export default function CertificadoButton({
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9]+/g, "-")}.pdf`;
+
+    trackEvent("generate_certificate", { curso: cursoTitulo });
 
     doc.save(nombreArchivo);
   }
