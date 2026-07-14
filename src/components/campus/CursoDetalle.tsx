@@ -5,6 +5,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { CursoCurriculum, Leccion } from "@/data/curriculum";
 import Quiz from "@/components/campus/Quiz";
+import { trackEvent } from "@/lib/gtag";
 
 interface Props {
   curso: CursoCurriculum;
@@ -65,6 +66,10 @@ export default function CursoDetalle({ curso, leccionesCompletadasIds }: Props) 
     if (!error) {
       setCompletadas((prev) => new Set(prev).add(leccionId));
       setRecienCompletada(true);
+      trackEvent("lesson_complete", {
+        curso: curso.cursoSlug,
+        leccion_id: leccionId,
+      });
     }
   }
 
