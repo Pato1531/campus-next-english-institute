@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { trackEvent } from "@/lib/gtag";
 
 type Paso = "email" | "codigo";
 
@@ -63,6 +64,7 @@ function LoginForm() {
       setError("Código incorrecto o vencido. Pedí uno nuevo.");
       return;
     }
+    trackEvent("login", { method: "otp_email" });
     router.push("/dashboard");
   }
 
